@@ -5,9 +5,11 @@
   --white-color: #FFFFFF;
   --text-secondary-color:  #5B5B5E;
   --black-color: #000000;
-  --separator-color: #D4D6E0 
+  --separator-color: #D4D6E0l;
+  --chart-color: #ff00
 }
 
 body{
+  margin: 0;
   font-family: "Open Sans", sans-serif;
 }

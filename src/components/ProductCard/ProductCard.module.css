@@ -1,0 +1,26 @@
+.card-wrapper {
+	background: white;
+	border-radius: 19px;
+	width: 320px;
+	box-shadow: 18.21px 18.21px 36.43px 0px #D3D1D840;
+
+}
+
+.card-head {
+	position: relative;
+	border-radius: 19px;
+	min-height: 165px;
+}
+
+.card-footer{ 
+	padding: 12px;
+}
+
+.title {
+	font-family: Open Sans;
+	font-weight: 600;
+	font-size: 18.21px;
+	line-height: 100%;
+	letter-spacing: 0%;
+	
+}
