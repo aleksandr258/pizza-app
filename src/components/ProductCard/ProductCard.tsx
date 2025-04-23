@@ -5,7 +5,7 @@ import { CardProps } from './ProductCard.prop';
 
 function ProductCard(props: CardProps) {
 	return (
-		<Link to={'/'} className={styles['link']}>
+		<Link to={`/product/${props.productId}`} className={styles['link']}>
 			<div className={ styles['card-wrapper']}>
 				<div className={styles['card-head']} style={{backgroundImage: `url('${props.image}')`}}>
 					<div className={styles['price']}>
@@ -22,7 +22,7 @@ function ProductCard(props: CardProps) {
 
 				</div>
 				<div className={ styles['card-footer']}>
-					<div className={styles['title']}>{props.title}</div>
+					<div className={styles['title']}>{props.name}</div>
 					<div className={styles['description']}>{props.description}</div>
 				</div>
 
