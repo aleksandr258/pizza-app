@@ -32,9 +32,7 @@ const router = createBrowserRouter([
 				element: <Product/>,
 				errorElement: <>Ошибка</>,
 				loader: async ({params}) => {
-					return defer({
-						data: axios.get(`${PREFIX}/products/${params.id}`).then(data => data)
-					});
+					
 					await new Promise<void>((resolve) => {
 						setTimeout(() => {
 							resolve();
