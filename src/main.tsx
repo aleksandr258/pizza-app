@@ -1,14 +1,18 @@
 import { lazy, StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import App from './App.tsx';
 import { createBrowserRouter, RouterProvider} from 'react-router-dom';
 import { Cart } from './pages/Cart/Cart.tsx';
 import { Error } from './pages/Error/Error.tsx';
 import { Layout } from './layout/Menu/Layout.tsx';
 import { Product } from './pages/Product/Product.tsx';
+import { Login } from './pages/Login/Login.tsx';
 import axios from 'axios';
 import { PREFIX } from './Helpers/API.ts';
+import { AuthLayout } from './layout/Auth/AuthLayout.tsx';
+import { RequireAuth } from './Helpers/RequireAuth.tsx';
+import { Provider } from 'react-redux';
+import { store } from './store/store.ts';
 
 
 const Menu = lazy(() => import('./pages/Menu/Menu.tsx'));
@@ -17,7 +21,7 @@ const Menu = lazy(() => import('./pages/Menu/Menu.tsx'));
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <Layout/>,
+		element: <RequireAuth><Layout/></RequireAuth>,
 		children: [
 			{
 				path: '/',
@@ -38,6 +42,22 @@ const router = createBrowserRouter([
 			}
 		]
 	},
+	
+	{
+		path: '/auth',
+		element: <AuthLayout/>,
+		children: [
+			{
+				path: 'login',
+				element: <Login/>
+			},
+			{
+				path: 'register',
+				element: <>Register</>
+			}
+		]
+	}
+	,
 	{
 		path: '*',
 		element: <Error/>
@@ -46,7 +66,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
 	<StrictMode>
-		<App />
-		<RouterProvider router={ router }/>
+		<Provider store={store}>
+			<RouterProvider router={ router }/>
+		</Provider>
 	</StrictMode>
 );

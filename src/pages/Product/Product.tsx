@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 
 export function Product(){
 
-	const data = useLoaderData() as ProductType;
+	const data = useLoaderData() as { data: ProductType};
 	return<>
 		<Suspense fallback={'Загружаю'}>
 
@@ -12,11 +12,9 @@ export function Product(){
 				resolve={data}
 				errorElement={<div>Не можем отобразить продукт</div>}
 			>
-				{(resolvedData: ProductType) => (
-					<div>Product name: {resolvedData.name}</div>
+				{({data}:  {data: ProductType}) => (
+					<>Product - {data.name}</>
 				)}
-
-				
 			</Await>
 		</Suspense>
 	</>;
