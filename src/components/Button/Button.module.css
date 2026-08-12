@@ -32,3 +32,8 @@
 	background: rgba(24, 24, 24, 1);
 
 }
+
+.button:disabled {
+ 	opacity: 0.6;
+  cursor: not-allowed;
+}

@@ -1,26 +1,28 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import styles from './Layout.module.css';
 import Button from '../../components/Button/Button';
+import { UserProfile } from '../../components/UserProfile/UserProfile';
 import cn from 'classnames';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../store/store';
+
 
 
 
 export function Layout(){
 	const navigate = useNavigate( );
+	const disptach = useDispatch<AppDispatch>();
+
 	const logout = () => {
-		localStorage.removeItem('jwt');
+		disptach({type: 'user/logout'});
 		navigate('/auth/login');
-	};
+	};	
 
 	return<div className={styles['layout']}>
 		<div className={styles['sidebar']}>
-			<div className={styles['user-profile']}>
-				<img src="src/assets/Intersect.png" alt="profile img"/>
-				<div className={styles['user-info']}>
-					<div className={styles['name']}>Ваня Иванов</div>
-					<div className={styles['mail']}>email.com</div>
-				</div>
-			</div>
+			<UserProfile 
+				avatarSrc='src/assets/Intersect.png'>
+			</UserProfile>
 
 			<div className={styles['menu']}>
 				<NavLink to="/" className={( {isActive} ) => cn(styles['link'], {

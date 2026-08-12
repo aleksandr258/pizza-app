@@ -13,6 +13,7 @@ import { AuthLayout } from './layout/Auth/AuthLayout.tsx';
 import { RequireAuth } from './Helpers/RequireAuth.tsx';
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
+import { Register } from './pages/Register/Register.tsx';
 
 
 const Menu = lazy(() => import('./pages/Menu/Menu.tsx'));
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
 				errorElement: <>Ошибка</>,
 				loader: async ({params}) => {
 					const { data } = await axios.get(`${PREFIX}/products/${params.id}`);
+					console.log(data)
 					return data;
 				}
 			}
@@ -53,7 +55,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: 'register',
-				element: <>Register</>
+				element: <Register/>
 			}
 		]
 	}
