@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import BackIcon from '../../assets/back-button.svg';
 import Rating from '../../assets/star.svg';
-import Cart from '../../assets/cart-icon.svg';
-import { cartActions } from '../../store/cart/cart.slice'
+import CartIcon from '../../assets/cart-icon.svg?react';
+import { cartActions } from '../../store/cart/cart.slice';
 import { useDispatch } from 'react-redux';	
 
 export function Product(){
@@ -28,10 +28,13 @@ export function Product(){
 							<button 
 								onClick={() => navigate('/')} 
 								className='flex items-center justify-center w-[38px] h-[38px] shadow-lg bg-white rounded-xl'>
-									<img src={BackIcon} alt="Back button" />
+								<img src={BackIcon} alt="Back button" />
 							</button>
 							<h1 className='text-4xl font-semibold'>{data.name}</h1>
-							<Button className='flex items-center gap-2' onClick={() => dispatch(cartActions.addProduct(data))}><img src={Cart} alt=""/><span>В корзину</span></Button>
+							<Button className='flex items-center gap-2' onClick={() => dispatch(cartActions.addProduct(data))}>
+								<CartIcon className='text-white'></CartIcon>
+								<span>В корзину</span>
+							</Button>
 						</div>
 						<div className='flex justify-center mt-[41px] '>
 							<div>

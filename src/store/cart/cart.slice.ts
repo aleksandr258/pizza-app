@@ -17,7 +17,8 @@ const initialState: Cart = {
 };
 
 export const selectCart = (store: RootState) => store.cart;
-export const selectTotal = (store: RootState) => store.cart.cartProducts.reduce((total, product) => total = product.quantity * product.price, 0);
+export const selectTotal = (store: RootState) => store.cart.cartProducts.reduce((total, product) => total += product.quantity * product.price, 0);
+export const selectCounter = (store: RootState) => store.cart.cartProducts.reduce((counter, product) => counter += product.quantity, 0);
 
 export const cartSlice = createSlice({
 	name: 'cart',
@@ -36,6 +37,9 @@ export const cartSlice = createSlice({
 			if (findProduct){
 				findProduct.quantity -= 1;
 				state.cartProducts.filter(product => product.quantity > 0);
+			}
+			if (findProduct && findProduct.quantity === 0){
+				state.cartProducts = state.cartProducts.filter(product => product.id !== action.payload);
 			}
 		},
 		clearCart: (state) => {

@@ -4,11 +4,12 @@ import { CardProps } from './ProductCard.prop';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../../store/cart/cart.slice';
 import { Product } from '../../interfaces/product.interface';
-
+import CartIcon from '../../assets/cart-icon.svg?react';
+import { Cart } from '../../pages/Cart/Cart';
 
 
 function ProductCard({ product }: CardProps ) {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 
 	return (
 		<Link to={`/product/${product.id}`} className={styles['link']}>
@@ -20,10 +21,10 @@ function ProductCard({ product }: CardProps ) {
 					</div>
 					<button className={styles['add-to-cart']} 
 						onClick={(e) => {
-							e.preventDefault()
-							dispatch(cartActions.addProduct(product))
+							e.preventDefault();
+							dispatch(cartActions.addProduct(product));
 						}}>
-						<img src="src/assets/cart-icon.svg" alt="cart icon" />
+						<CartIcon className='text-white'></CartIcon>
 					</button>
 					<div className={styles['rating']}>
 						{product.rating}&nbsp;

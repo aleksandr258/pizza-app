@@ -5,14 +5,16 @@ import { UserProfile } from '../../components/UserProfile/UserProfile';
 import cn from 'classnames';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store/store';
-
+import { useAppSelector } from '../../store/hooks';
+import CartIcon from '../../assets/cart-icon.svg?react';
+import { selectCounter } from '../../store/cart/cart.slice';
 
 
 
 export function Layout(){
 	const navigate = useNavigate( );
 	const disptach = useDispatch<AppDispatch>();
-
+	const productCounter = useAppSelector(selectCounter);
 	const logout = () => {
 		disptach({type: 'user/logout'});
 		navigate('/auth/login');
@@ -34,8 +36,12 @@ export function Layout(){
 				<NavLink to="/cart" className={ ({isActive}) => cn(styles['link'], {
 					[styles['active']]: isActive
 				})}>
-					<img src="src/assets/cart-icon.svg" alt="cart icon" />
-				Корзина</NavLink>
+					<div className='relative'>
+						<CartIcon className='text-[#D5D5D9]'></CartIcon>
+						<span className='absolute  -top-4 -right-1 text-sm'>{ productCounter > 0 && productCounter}</span>
+					</div>
+					Корзина
+				</NavLink>
 			</div>
 
 			<Button className={styles['exit']} onClick={logout}>

@@ -1,35 +1,14 @@
-import { useEffect, useState } from 'react';
 import Headling from '../../components/Headling/Headling';
 import Search from '../../components/Search/Search';
-import { Product } from '../../interfaces/product.interface';
 import styles from './Menu.module.css';
-import { AxiosError } from 'axios';
 import { ProductList } from './MenuList/MenuList';
-import { getProducts } from '../../api/product';
+import { useGetProductsQuery } from '../../api/baseApi';
+import { isErrorWithMessage } from '../../api/apiError';
+import { ProductCardSkeleton } from '../../components/ProductCard/ProductCardSkeleton';
 
 
 function Menu(){
-	const [products, SetProducts] = useState<Product[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(false); 
-	const [error, setError] = useState<string | undefined>();
-	const getMenu = async () => {
-		try{
-			setIsLoading(true);
-			const data = await getProducts();
-			SetProducts(data);
-			setIsLoading(false);
-		}catch(err){
-			console.error(err);
-			if (err instanceof AxiosError){
-				setError(err.message);
-			}
-			setIsLoading(false);
-		}
-	};
-
-	useEffect(() => {
-		getMenu();
-	}, []);
+	const { data, isLoading, error } = useGetProductsQuery();
 
 	return<>
 		<div className={styles['head']}>
@@ -37,8 +16,14 @@ function Menu(){
 			<Search placeholder='Введите блюдо или состав'/>
 		</div>
 		<div>
-			{error && <>{error}</>}
-			{!isLoading && <ProductList products={products}/>}
+			{isLoading && <div className='flex items-center justify-center flex-wrap gap-11'>
+				<ProductCardSkeleton/>
+				<ProductCardSkeleton/>
+				<ProductCardSkeleton/>
+				<ProductCardSkeleton/>
+			</div>}
+			{isErrorWithMessage(error) && <>{error.message}</>}
+			{data && <ProductList products={data}/>}
 		</div>
 	</>;
 }
