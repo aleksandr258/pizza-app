@@ -3,9 +3,7 @@ import styles from './ProductCard.module.css';
 import { CardProps } from './ProductCard.prop';
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../../store/cart/cart.slice';
-import { Product } from '../../interfaces/product.interface';
 import CartIcon from '../../assets/cart-icon.svg?react';
-import { Cart } from '../../pages/Cart/Cart';
 
 
 function ProductCard({ product }: CardProps ) {

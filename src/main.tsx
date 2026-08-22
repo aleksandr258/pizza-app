@@ -7,8 +7,6 @@ import { Error } from './pages/Error/Error.tsx';
 import { Layout } from './layout/Menu/Layout.tsx';
 import { Product } from './pages/Product/Product.tsx';
 import { Login } from './pages/Login/Login.tsx';
-import axios from 'axios';
-import { PREFIX } from './Helpers/API.ts';
 import { AuthLayout } from './layout/Auth/AuthLayout.tsx';
 import { RequireAuth } from './Helpers/RequireAuth.tsx';
 import { Provider } from 'react-redux';
@@ -35,12 +33,7 @@ const router = createBrowserRouter([
 			{ 
 				path: '/product/:id',
 				element: <Product/>,
-				errorElement: <>Ошибка</>,
-				loader: async ({params}) => {
-					const { data } = await axios.get(`${PREFIX}/products/${params.id}`);
-					console.log(data)
-					return data;
-				}
+				errorElement: <>Ошибка</>
 			}
 		]
 	},

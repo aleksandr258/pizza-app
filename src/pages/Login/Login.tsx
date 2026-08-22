@@ -43,7 +43,6 @@ export function Login(){
 				email: email.value,
 				password: password.value
 			}).unwrap();
-		
 			console.log(res);
 			dispatch(userActions.addJwt(res.access_token));
 		}catch(err){

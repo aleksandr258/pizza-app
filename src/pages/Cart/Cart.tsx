@@ -5,7 +5,7 @@ import MinusIcon from '../../assets/minus-icon.svg';
 import CloseIcon from '../../assets/close-icon.svg';
 import Button from '../../components/Button/Button';
 import { useCreateOrderMutation } from '../../api/baseApi';
-import { isFetchBaseQueryError } from '../../api/apiError';
+import { isFetchBaseQueryError, getErrorMessage} from '../../api/apiError';
 import { useState } from 'react';
 import { OrderCard } from './OrderCard';
 
@@ -24,7 +24,7 @@ export function Cart(){
 				count: product.quantity
 			};
 		});
-		console.log(productsArr);
+
 		try{
 			const res = await createOrder({products: productsArr}).unwrap();
 			console.log(res);
@@ -44,6 +44,10 @@ export function Cart(){
 
 	if (data?.status){
 		return <OrderCard></OrderCard>;
+	}
+
+	if ( error){
+		return <div>Возника ошибка при оформлении заказа: <span className='text-red-500'>{getErrorMessage(error)}</span></div>;
 	}
 
 	return (
@@ -71,7 +75,7 @@ export function Cart(){
 											<button onClick={() => dispatch(cartActions.addProduct(product))} className='flex justify-center rounded-full  bg-primary w-[28px] h-[28px] shadow-[0px_8.5px_18.21px_0px_#FE724C66]'>
 												<img className='w-[10px]' src={PlusIcon}></img>
 											</button>
-											<button onClick={() => dispatch(cartActions.clearCart())} >
+											<button onClick={() => dispatch(cartActions.clearProduct(product.id))} >
 												<img src={CloseIcon}></img>
 											</button>
 										</div>

@@ -8,15 +8,16 @@ import { AppDispatch } from '../../store/store';
 import { useAppSelector } from '../../store/hooks';
 import CartIcon from '../../assets/cart-icon.svg?react';
 import { selectCounter } from '../../store/cart/cart.slice';
-
+import { baseApi } from '../../api/baseApi';
 
 
 export function Layout(){
 	const navigate = useNavigate( );
-	const disptach = useDispatch<AppDispatch>();
+	const dispatch = useDispatch<AppDispatch>();
 	const productCounter = useAppSelector(selectCounter);
 	const logout = () => {
-		disptach({type: 'user/logout'});
+		dispatch({type: 'user/logout'});
+		dispatch(baseApi.util.resetApiState());
 		navigate('/auth/login');
 	};	
 
