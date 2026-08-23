@@ -1,13 +1,23 @@
 @import "tailwindcss";
+
+@theme {
+  --color-muted: #C4C4C4;
+  --color-primary:  #FE724C;
+  --color-secondary: #5B5B5E;
+  --font-open-sans: "Open Sans", sans-serif;
+}
+
+
 :root {
-  --font: "Open Sans", sans-serif;
   --primary-color: #FE724C;
   --primary-hover-color: #be4524;
   --white-color: #FFFFFF;
   --text-secondary-color:  #5B5B5E;
   --black-color: #000000;
   --separator-color: #D4D6E0;
-  --chart-color: #ff00
+  --chart-color: #ff00;
+  --text-muted-color: #C4C4C4;
+
 }
 
 body{

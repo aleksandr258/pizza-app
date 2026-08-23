@@ -7,12 +7,11 @@ import { Error } from './pages/Error/Error.tsx';
 import { Layout } from './layout/Menu/Layout.tsx';
 import { Product } from './pages/Product/Product.tsx';
 import { Login } from './pages/Login/Login.tsx';
-import axios from 'axios';
-import { PREFIX } from './Helpers/API.ts';
 import { AuthLayout } from './layout/Auth/AuthLayout.tsx';
 import { RequireAuth } from './Helpers/RequireAuth.tsx';
 import { Provider } from 'react-redux';
 import { store } from './store/store.ts';
+import { Register } from './pages/Register/Register.tsx';
 
 
 const Menu = lazy(() => import('./pages/Menu/Menu.tsx'));
@@ -34,11 +33,7 @@ const router = createBrowserRouter([
 			{ 
 				path: '/product/:id',
 				element: <Product/>,
-				errorElement: <>Ошибка</>,
-				loader: async ({params}) => {
-					const { data } = await axios.get(`${PREFIX}/products/${params.id}`);
-					return data;
-				}
+				errorElement: <>Ошибка</>
 			}
 		]
 	},
@@ -53,7 +48,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: 'register',
-				element: <>Register</>
+				element: <Register/>
 			}
 		]
 	}

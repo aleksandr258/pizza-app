@@ -1,11 +1,16 @@
 import { saveState } from './storage';
-import { JWT_PERSISTENT_STATE, userSlice } from './user.slice';
+import { JWT_PERSISTENT_STATE, userSlice } from './user/user.slice';
+import { cartSlice } from './cart/cart.slice';
 import { configureStore } from '@reduxjs/toolkit';
+import { baseApi } from '../api/baseApi';
 
 export const store = configureStore({
 	reducer: {
-		user: userSlice.reducer
-	}
+		user: userSlice.reducer,
+		cart: cartSlice.reducer,
+		[baseApi.reducerPath]: baseApi.reducer
+	},
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware)
 }); 
 
 store.subscribe(() => {

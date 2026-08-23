@@ -1,44 +1,40 @@
-import { useEffect, useState } from 'react';
 import Headling from '../../components/Headling/Headling';
 import Search from '../../components/Search/Search';
-import { PREFIX } from '../../Helpers/API';
-import { Product } from '../../interfaces/product.interface';
 import styles from './Menu.module.css';
-import axios, { AxiosError } from 'axios';
 import { ProductList } from './MenuList/MenuList';
-
+import { useGetProductsQuery } from '../../api/baseApi';
+import { isErrorWithMessage } from '../../api/apiError';
+import { ProductCardSkeleton } from '../../components/ProductCard/ProductCardSkeleton';
+import { useState } from 'react';
 
 function Menu(){
-	const [products, SetProducts] = useState<Product[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(false); 
-	const [error, setError] = useState<string | undefined>();
-	const getMenu = async () => {
-		try{
-			setIsLoading(true);
-			const { data } = await axios.get<Product[]>(`${PREFIX}/products`);
-			SetProducts(data);
-			setIsLoading(false);
-		}catch(err){
-			console.error(err);
-			if (err instanceof AxiosError){
-				setError(err.message);
-			}
-			setIsLoading(false);
-		}
-	};
+	const [ searchTerm, setSearchTerm ] = useState<string>('');
+	const { data, isLoading, error } = useGetProductsQuery();
 
-	useEffect(() => {
-		getMenu();
-	}, []);
+	const displayedProducts = searchTerm 
+		? data?.filter(product => product.name.toLocaleLowerCase().includes(searchTerm.toLowerCase())
+			|| product.ingredients.some(ingridient => ingridient.toLowerCase().includes(searchTerm.toLowerCase())))
+		: data;
+
 
 	return<>
 		<div className={styles['head']}>
 			<Headling>Меню</Headling>
-			<Search placeholder='Введите блюдо или состав'/>
+			<Search placeholder='Введите блюдо или состав' onChange={(e) => setSearchTerm(e.target.value)}/>
 		</div>
 		<div>
-			{error && <>{error}</>}
-			{!isLoading && <ProductList products={products}/>}
+			{isLoading && <div className='flex items-center justify-center flex-wrap gap-11'>
+				<ProductCardSkeleton/>
+				<ProductCardSkeleton/>
+				<ProductCardSkeleton/>
+				<ProductCardSkeleton/>
+			</div>}
+			{isErrorWithMessage(error) && <>{error.message}</>}
+			{displayedProducts && (
+				displayedProducts.length > 0
+					? <ProductList products={displayedProducts}/>
+					:	<div>Ничего не найдено</div>
+			)}
 		</div>
 	</>;
 }
