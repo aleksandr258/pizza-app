@@ -5,13 +5,17 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { AddToCart } from './_components/AddToCart';
 import { IProduct } from '@/types/product.interface';
+import { PREFIX } from '@/src-legacy/Helpers/API';
 
-export default async function Product(){
+
+
+export default async function Product({ params }: { params: Promise<{ id: string }> }) {
 	// const navigate = useNavigate();
+	const { id } = await params;
 	// const { id } = useParams<{ id: string }>();
 	// const dispatch = useDispatch();
 	// const { data, isLoading, error } = useGetProductByIdQuery( Number(id), {skip: !id} );
-	const res = await fetch(`http://localhost:3000/api/product/${id}`);
+	const res = await fetch(`${PREFIX}/products/${id}`);
 	const data = await res.json() as IProduct;
 	// if (isLoading){
 	// 	return <div>Загрузка...</div>;
@@ -30,7 +34,7 @@ export default async function Product(){
 			<div
 			 className='flex justify-between items-center' >
 				<Link href='/' className='flex items-center justify-center w-[38px] h-[38px] shadow-lg bg-white rounded-xl'>
-					<Image src='back-button.svg' width={10} height={10} alt='back button'/>
+					<Image src='/back-button.svg' width={10} height={10} alt='back button'/>
 				</Link>
 				<h1 className='text-4xl font-semibold'>{data.name}</h1>
 				<AddToCart product={data}/>
@@ -41,7 +45,8 @@ export default async function Product(){
 			</div>
 			<div className='flex justify-center mt-[41px] '>
 				<div>
-					<img src={data.image} alt="product image" className='w-[323px] h-[248px] rounded-xl'/>
+					{/* <img src={data.image} alt="product image" className='w-[323px] h-[248px] rounded-xl'/> */}
+					<Image src={data.image} alt="product image" width={323} height={248} className='rounded-xl'/>
 				</div>
 				<div className='flex flex-col min-w-[242px] ml-[48px] gap-[17px]'>
 					<dl className='flex border-b justify-between border-[#F1F2F3]'>

@@ -1,7 +1,8 @@
-import Image from 'next/image';
+'use client';
 import Button from '@/components/ui/Button/Button';
 import { useCart } from '@/components/Cart/useCart';
 import { IProduct } from '@/types/product.interface';
+import CartIcon from '@/public/cart-icon.svg';
 
 export function AddToCart({ product }: { product: IProduct }) {
 	const { dispatch } = useCart();
@@ -11,7 +12,7 @@ export function AddToCart({ product }: { product: IProduct }) {
 			className='flex items-center gap-2'
 			onClick={() => dispatch({ type: 'add', payload: product })}
 		>
-			<Image src='/cart-icon.svg' width={16} height={17} alt='cart icon' />
+			<CartIcon className='text-white'></CartIcon>
 			<span>В корзину</span>
 		</Button>
 	);
