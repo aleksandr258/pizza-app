@@ -1,54 +1,74 @@
-# React + TypeScript + Vite
+# Pizza App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Учебный проект — SPA для заказа пиццы: каталог с поиском, страница товара, корзина, оформление заказа, регистрация/вход.
 
-Currently, two official plugins are available:
+**Демо:** _ссылка появится после деплоя_
+**Бэкенд:** публичное учебное API [`purpleschool.ru/pizza-api-demo`](https://purpleschool.ru/pizza-api-demo) — свой сервер не требуется, ключи и `.env` не нужны.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Стек
 
-## Expanding the ESLint configuration
+- **React 19** + **TypeScript**, сборка на **Vite**
+- **Redux Toolkit** + **RTK Query** — состояние приложения и работа с сервером
+- **React Router v7** — маршрутизация
+- **Tailwind CSS v4** + **CSS Modules** — стили
+- **ESLint** (typescript-eslint) — линт
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Запуск локально
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+npm install
+npm run dev       # http://localhost:5173
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Другие команды:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run build      # прод-сборка (tsc -b && vite build)
+npm run preview    # локальный просмотр прод-сборки
+npm run lint        # ESLint
 ```
+
+Node.js 18+. Переменные окружения не нужны — адрес API захардкожен на публичный демо-бэкенд.
+
+## Функциональность
+
+- каталог пицц с поиском по названию и составу
+- страница товара
+- корзина (добавление/удаление, изменение количества, пересчёт суммы)
+- оформление заказа
+- регистрация и вход, JWT-авторизация
+- защищённые роуты — неавторизованного редиректит на `/auth/login`
+
+## Архитектурные решения
+
+**RTK Query как единственный источник серверных данных.** Один `baseApi` (`src/api/baseApi.ts`) на все эндпоинты (продукты, профиль, заказ, логин/регистрация) — без ручных `fetch`/`axios` в компонентах, кеширование и состояния загрузки/ошибки из коробки.
+
+**Разделение серверного и клиентского состояния.** RTK Query кеширует ответы сервера; JWT и факт авторизации — в отдельном plain-слайсе `user.slice` (не серверные данные, а собственное состояние клиента).
+
+**Авторизация через `prepareHeaders`.** `Authorization: Bearer <jwt>` подставляется в заголовки автоматически на уровне `baseApi`, кроме явно публичных эндпоинтов (`getProducts`, `getProductById`) — не нужно прокидывать токен в каждый запрос вручную.
+
+**Персистентность JWT.** Токен сохраняется в `localStorage` через подписку на стор (`store.subscribe` + `storage.ts`), чтобы сессия переживала обновление страницы.
+
+**Защита роутов.** Компонент `RequireAuth` оборачивает приватные роуты и редиректит неавторизованных на страницу логина.
+
+**Типобезопасная обработка ошибок RTK Query.** `api/apiError.ts` — тайпгарды (`isFetchBaseQueryError`, `isErrorWithMessage`) для безопасного извлечения сообщения об ошибке из `unknown`.
+
+**Код-сплиттинг.** Страница меню подключена через `React.lazy` + `Suspense`.
+
+**UI-компоненты** (`Button`, `Input`, `Headling`, `ProductCard`, ...) переиспользуемые, со своими CSS Modules и типизированными пропсами.
+
+## Структура
+
+```
+src/
+  api/          RTK Query (baseApi) + тайпгарды ошибок
+  components/   переиспользуемые UI-компоненты
+  layout/       layout'ы (меню, auth)
+  pages/        страницы (Menu, Product, Cart, Login, Register)
+  store/        Redux store, слайсы (user, cart)
+  interfaces/   TypeScript-типы
+```
+
+## В разработке
+
+Идёт переписывание проекта на **Next.js (App Router)** — Server Components, Server Actions, серверная авторизация через httpOnly-куки: ветка [`feature/nextjs-migration`](../../tree/feature/nextjs-migration).

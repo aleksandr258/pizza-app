@@ -2,7 +2,7 @@ import { UserProfileProp } from './UserProfile.prop';
 import { useGetProfileQuery } from '../../api/baseApi';
 
 export function UserProfile({avatarSrc}: UserProfileProp ){
-	const { data, isLoading, isError } = useGetProfileQuery();
+	const { data, isLoading } = useGetProfileQuery();
 
 	if (isLoading){
 		return (
