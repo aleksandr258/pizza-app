@@ -2,12 +2,17 @@ import { pool } from '../db.js';
 import { HttpError } from '../utils/HttpError.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 
-const mapProduct = (row) => ({
+// `row.image` is stored as a root-relative path (`/products/foo.svg`).
+// The frontend renders it directly as <img src>/CSS background-image
+// with no base URL of its own, so it must resolve against the backend's
+// origin, not the frontend's — hence building an absolute URL here from
+// the incoming request instead of returning the raw path.
+const mapProduct = (row, req) => ({
   id: row.id,
   name: row.name,
   price: Number(row.price),
   ingredients: row.ingredients,
-  image: row.image,
+  image: `${req.protocol}://${req.get('host')}${row.image}`,
   rating: Number(row.rating),
 });
 
@@ -20,7 +25,7 @@ export const getProducts = asyncHandler(async (req, res) => {
   // locale, under which ILIKE never case-folds non-ASCII text — so a
   // Cyrillic search like "олив" would silently never match "Оливковая".
   const { rows } = await pool.query('SELECT * FROM products ORDER BY id');
-  let products = rows.map(mapProduct);
+  let products = rows.map((row) => mapProduct(row, req));
 
   if (name) {
     const needle = name.toLocaleLowerCase();
@@ -42,5 +47,5 @@ export const getProductById = asyncHandler(async (req, res) => {
     throw new HttpError(404, 'Product not found');
   }
 
-  res.status(200).json(mapProduct(rows[0]));
+  res.status(200).json(mapProduct(rows[0], req));
 });
