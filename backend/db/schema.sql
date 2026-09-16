@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  name TEXT NOT NULL,
+  password_hash TEXT NOT NULL,
+  address TEXT NOT NULL DEFAULT '',
+  phone TEXT NOT NULL DEFAULT '',
+  restore_token TEXT
+);
+
+CREATE TABLE IF NOT EXISTS products (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  price NUMERIC(10, 2) NOT NULL,
+  ingredients TEXT[] NOT NULL DEFAULT '{}',
+  image TEXT NOT NULL DEFAULT '',
+  rating NUMERIC(2, 1) NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id),
+  status TEXT NOT NULL DEFAULT 'created',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  data JSONB NOT NULL
+);
