@@ -7,6 +7,7 @@ import { useRegisterUserMutation } from '../../api/baseApi';
 import { isFetchBaseQueryError, getErrorMessage } from '../../api/apiError';
 import { userActions } from '../../store/user/user.slice';
 import { useAppDispatch } from '../../store/hooks';
+import { useNavigate } from 'react-router-dom';
 
 export type RegisterForm = {
 	email: {
@@ -24,6 +25,15 @@ export function Register(){
 	const [ disableButton, setDisable ] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const [ registerUser, { error }] = useRegisterUserMutation();
+	const navigate = useNavigate();
+	// const jwt = useAppSelector(s => s.user.jwt);
+
+	// useEffect(() => {
+	// 	if (jwt){
+	// 		navigate('/');
+	// 	}
+	
+	// },[jwt, navigate]);
 
 	const submit = async(e: FormEvent) => {
 		e.preventDefault();
@@ -39,6 +49,7 @@ export function Register(){
 			}).unwrap();
 			console.log(res);
 			dispatch(userActions.addJwt(res.access_token));
+			navigate('/');
 		}catch(err){
 			console.error(err);
 			if (isFetchBaseQueryError(err)){
