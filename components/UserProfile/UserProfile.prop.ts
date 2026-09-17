@@ -1,3 +1,5 @@
 export interface UserProfileProp {
-	avatarSrc: string
+	avatarSrc: string,
+	name: string,
+	email: string
 }

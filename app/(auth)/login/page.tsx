@@ -1,6 +1,7 @@
 import Button from '../../../components/ui/Button/Button';
 import Headling from '../../../components/ui/Headling/Headling';
 import Input from '../../../components/ui/Input/Input';
+import { loginUser } from '../action';
 import Link from 'next/link';
 
 
@@ -47,7 +48,7 @@ export default function Login(){
 		<div className='flex flex-col  max-w-[324px] ml-[88px]' >
 			<Headling>Вход</Headling>
 
-			<form className='flex flex-col mt-8 mb-4 gap-[30px]' >
+			<form className='flex flex-col mt-8 mb-4 gap-[30px]' action={loginUser}>
 				<div className='flex flex-col gap-2'>
 					<label htmlFor="email" className='text-[color:#C4C4C4] font-lg font-normal'>Ваш email</label>
 					<Input type="text" name='email' id='email' placeholder='Введите email' className=' h-[65px]'/>

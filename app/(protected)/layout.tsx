@@ -4,21 +4,28 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { CartProvider } from '@/components/Cart/CartProvider';
 import CartCounter from '@/components/Cart/CartCounter';
+import { getCurrentUser } from '@/lib/data/dal';
+import { redirect } from 'next/navigation';
+import { logoutUser } from '../(auth)/action';
 
-
-
-
-export default function Layout({children}: {children: React.ReactNode}) {
+export default async function Layout({children}: {children: React.ReactNode}) {
 
 	// const productCounter = useAppSelector(selectCounter);
-
+	const user = await getCurrentUser();
+	console.log('user', user);
+	if (!user){
+		redirect('/login');
+	}
 
 	return(
 		<CartProvider>
-			<div className='flex h-screen'>
-				<div className='flex flex-col border-r border-[color:var(--separator-color)] pr-[25px] pl-[25px] pb-[67px]'>
+			<div className='flex h-screen overflow-hidden'>
+				<div className='flex flex-col  border-r border-[color:var(--separator-color)] pr-[25px] pl-[25px] pb-[67px]'>
 					<UserProfile 
-						avatarSrc='/profile-img.png'>
+						avatarSrc='/profile-img.png'
+						name={user.name}
+						email={user.email}
+					>
 					</UserProfile>
 
 					<div className='flex flex-col gap-4 mt-[31px] mb-[31px]'>
@@ -62,19 +69,21 @@ export default function Layout({children}: {children: React.ReactNode}) {
 					Корзина
 				</NavLink> */}
 					</div>
-
-					<Button  className='flex mt-auto justify-center gap-2 w-[117px]'>
-						<Image
-							src='on-icon.svg'
-							alt="exit button"
-							width={26}
-							height={26}
-						/>
-						<span>Выход</span>
-					</Button>
+					
+					<form action={logoutUser} className='flex flex-col mt-auto'>
+						<Button  className='flex mt-auto justify-center gap-2 w-[117px]'>
+							<Image
+								src='/on-icon.svg'
+								alt="exit button"
+								width={26}
+								height={26}
+							/>
+							<span>Выход</span>
+						</Button>
+					</form>
 				</div>
 
-				<div>
+				<div className='flex-1 px-9 py-6 overflow-y-auto'>
 					{children}
 				</div>
 			</div>

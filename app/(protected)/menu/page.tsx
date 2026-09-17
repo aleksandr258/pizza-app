@@ -1,5 +1,5 @@
 import Headling from '../../../components/ui/Headling/Headling';
-import Search from '../../../components/Search/Search';
+// import Search from '../../../components/Search/Search';
 // import styles from './Menu.module.css';
 import { ProductList } from './_components/MenuList';
 import { PREFIX } from '@/src-legacy/Helpers/API';
@@ -19,7 +19,7 @@ export default async function Menu(){
 	// 	: data;
 
 
-	return<>
+	return<div className='pl-9'>
 		<div className='flex justify-between'>
 			<Headling>Меню</Headling>
 			{/* <Search placeholder='Введите блюдо или состав' onChange={(e) => setSearchTerm(e.target.value)}/> */}
@@ -39,6 +39,6 @@ export default async function Menu(){
 			// 		:	<div>Ничего не найдено</div>
 			// )} */}
 		</div>
-	</>;
+	</div>;
 }
 

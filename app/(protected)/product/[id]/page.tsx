@@ -30,7 +30,7 @@ export default async function Product({ params }: { params: Promise<{ id: string
 	// }
 
 	return(
-		<div className='flex flex-col'>
+		<div className='flex flex-col mt-6'>
 			<div
 			 className='flex justify-between items-center' >
 				<Link href='/' className='flex items-center justify-center w-[38px] h-[38px] shadow-lg bg-white rounded-xl'>
@@ -65,7 +65,7 @@ export default async function Product({ params }: { params: Promise<{ id: string
 						<h3 className='font-semibold text-secondary mb-[12px]'>Состав</h3>
 						<ul className='ml-4'>
 							{data.ingredients.map((ingredient) => 
-								<li className='list-disc font-normal text-secondary'>{ingredient}</li>
+								<li className='list-disc font-normal text-secondary' key={ingredient}>{ingredient}</li>
 							)}
 						</ul>
 					</div>

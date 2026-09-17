@@ -4,7 +4,8 @@ const nextConfig: NextConfig = {
 	/* config options here */
 	images: {
 		remotePatterns: [
-			{ protocol: 'https', hostname: 'cdn-bucket.hb.ru-msk.vkcs.cloud' }
+			{ protocol: 'https', hostname: 'cdn-bucket.hb.ru-msk.vkcs.cloud' },
+			{ protocol: 'http', hostname: 'localhost', port: '3001' }
 		]
 	},
 	turbopack: {

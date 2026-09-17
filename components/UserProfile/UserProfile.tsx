@@ -1,7 +1,7 @@
 import { UserProfileProp } from './UserProfile.prop';
 import Image from 'next/image';
 
-export function UserProfile({avatarSrc}: UserProfileProp ){
+export function UserProfile({avatarSrc, name, email}: UserProfileProp ){
 
 
 	// if (isLoading){
@@ -22,8 +22,8 @@ export function UserProfile({avatarSrc}: UserProfileProp ){
 				className='w-[90px] h-[90px] object-cover mr-[120px]'
 			/>
 			<div>
-				<div className='text-black font-bold text-xl'>{'test'}</div>
-				<div className='text-[#9EA1B1] font-normal text-sm'>{'test2'}</div>
+				<div className='text-black font-bold text-xl'>{name}</div>
+				<div className='text-[#9EA1B1] font-normal text-sm'>{email}</div>
 			</div>
 		</div>
 	);

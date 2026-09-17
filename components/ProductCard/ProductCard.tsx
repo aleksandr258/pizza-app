@@ -1,8 +1,6 @@
-import { Link } from 'react-router-dom';
 import styles from './ProductCard.module.css';
 import { CardProps } from './ProductCard.prop';
 import { useDispatch } from 'react-redux';
-import { cartActions } from '../../store/cart/cart.slice';
 import CartIcon from '../../assets/cart-icon.svg?react';
 
 
@@ -12,7 +10,7 @@ function ProductCard({ product }: CardProps ) {
 	return (
 		<Link to={`/product/${product.id}`} className={styles['link']}>
 			<div className={ styles['card-wrapper']}>
-				<div className={styles['card-head']} style={{backgroundImage: `url('${product.image}')`}}>
+				<div className='relative rounded-2xl min-h-[165px] bg-cover bg-center bg-no-repeat' style={{backgroundImage: `url('${product.image}')`}}>
 					<div className={styles['price']}>
 						{product.price}&nbsp;
 						<span className={styles['currency']}>₽</span>

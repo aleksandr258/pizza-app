@@ -15,7 +15,7 @@ function ProductCard({ product }: CardProps ) {
 	return (
 		<Link href={`/product/${product.id}`} className={styles['link']}>
 			<div className={ styles['card-wrapper']}>
-				<div className={styles['card-head']} style={{backgroundImage: `url('${product.image}')`}}>
+				<div className='relative min-h-[165px] rounded-2xl bg-cover bg-center bg-no-repeat' style={{backgroundImage: `url('${product.image}')`}}>
 					<div className={styles['price']}>
 						{product.price}&nbsp;
 						<span className={styles['currency']}>₽</span>
@@ -35,7 +35,7 @@ function ProductCard({ product }: CardProps ) {
 							height={17}
 						/> */}
 					</button>
-					<div className={styles['rating']}>
+					<div className='flex items-center gap-1 absolute bottom-2 right-2 bg-white rounded-full px-2 py-[2px]'>
 						{product.rating}&nbsp;
 						<Image
 							src='/star.svg'

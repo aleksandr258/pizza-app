@@ -3,7 +3,7 @@ import Headling from '../../../components/ui/Headling/Headling';
 import Button from '../../../components/ui/Button/Button';
 import Input from '../../../components/ui/Input/Input';
 import Link from 'next/link';
-
+import { registerUser } from '../action';
 
 export type RegisterForm = {
 	email: {
@@ -50,7 +50,7 @@ export default function Register(){
 	return (
 		<div className='flex flex-col'>
 			<Headling className='mb-[31px]'>Регистрация</Headling>
-			<form className='flex flex-col gap-4  items-center mb-[31px]' >
+			<form className='flex flex-col gap-4  items-center mb-[31px]' action={registerUser}>
 				<div className='flex flex-col w-[324px] gap-2'>
 					<label htmlFor="" className='text-muted'>Ваш email</label>
 					<Input type="text" name="email" id="email" placeholder='Введите email' className=''/>
