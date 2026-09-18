@@ -58,7 +58,7 @@ API отдаётся под `http://localhost:3001/pizza-api-demo` — так ж
 | POST  | `/auth/register`            | -           | `{ email, name, password }`            |
 | POST  | `/auth/login`                | -           | `{ email, password }`                  |
 | GET   | `/user/profile`             | JWT         | -                                       |
-| GET   | `/products`                 | -           | `?limit=&offset=&name=`                |
+| GET   | `/products`                 | -           | `?limit=&offset=&q=`                   |
 | GET   | `/products/:id`             | -           | -                                       |
 | POST  | `/order`                    | JWT         | `{ products: [{ id, count }] }`        |
 
@@ -73,3 +73,6 @@ API отдаётся под `http://localhost:3001/pizza-api-demo` — так ж
   что этого поля ожидает фронтендовый тип `ProfileResponse` (скопированный
   из эталонного demo API) — в реальном продакшен API так делать не стоит.
 - Пароли хешируются через bcrypt; в payload JWT лежит `{ id, email }`.
+- `?q=` в `GET /products` ищет подстроку и по названию, и по составу
+  (`ingredients`) — один инпут на фронте может фильтровать по обоим полям
+  через один и тот же параметр.
