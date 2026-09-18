@@ -17,19 +17,23 @@ const mapProduct = (row, req) => ({
 });
 
 export const getProducts = asyncHandler(async (req, res) => {
-  const { limit, offset, name } = req.query;
+  const { limit, offset, q } = req.query;
 
-  // Filtering by name happens in JS, not SQL ILIKE: Postgres case-folds
-  // ILIKE according to the database's collation, and many clusters
+  // Filtering happens in JS, not SQL ILIKE: Postgres case-folds ILIKE
+  // according to the database's collation, and many clusters
   // (Homebrew/Docker defaults included) are initialized with the "C"
   // locale, under which ILIKE never case-folds non-ASCII text — so a
   // Cyrillic search like "олив" would silently never match "Оливковая".
   const { rows } = await pool.query('SELECT * FROM products ORDER BY id');
   let products = rows.map((row) => mapProduct(row, req));
 
-  if (name) {
-    const needle = name.toLocaleLowerCase();
-    products = products.filter((p) => p.name.toLocaleLowerCase().includes(needle));
+  if (q) {
+    const needle = q.toLocaleLowerCase();
+    products = products.filter(
+      (p) =>
+        p.name.toLocaleLowerCase().includes(needle) ||
+        p.ingredients.some((ingredient) => ingredient.toLocaleLowerCase().includes(needle))
+    );
   }
 
   const start = offset !== undefined ? Number(offset) : 0;
